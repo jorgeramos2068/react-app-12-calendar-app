@@ -1,4 +1,4 @@
-React web application that will work as the fronend for a calendar and events project.
+React web application that will work as the frontend for a calendar and events project.
 
 ## Available Scripts
 
