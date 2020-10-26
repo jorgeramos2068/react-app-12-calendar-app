@@ -5,6 +5,7 @@ import moment from 'moment';
 import DateTimePicket from 'react-datetime-picker';
 import Swal from 'sweetalert2';
 import { uiCloseModal } from '../../actions/ui';
+import { addNewEvent } from '../../actions/events';
 
 const customStyles = {
   content : {
@@ -64,7 +65,11 @@ const CalendarModal = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     if (isValidForm()) {
-
+      const newEvent = {
+        ...formValues,
+        id: new Date().getTime()
+      };
+      dispatch(addNewEvent(newEvent));
     }
   };
 
