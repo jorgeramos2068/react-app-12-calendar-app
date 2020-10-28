@@ -20,6 +20,12 @@ const customStyles = {
 Modal.setAppElement('#root');
 const now = moment().minutes(0).seconds(0).add(1, 'hours');
 const later = now.clone().add(1, 'hours');
+const initialEvent = {
+  title: '',
+  notes: '',
+  start: now.toDate(),
+  end: later.toDate()
+}
 
 const CalendarModal = () => {
   const dispatch = useDispatch();
@@ -28,12 +34,6 @@ const CalendarModal = () => {
   const [startDate, setStartDate] = useState(now.toDate());
   const [endDate, setEndDate] = useState(later.toDate());
   const [isValidTitle, setIsValidTitle] = useState(true);
-  const initialEvent = {
-    title: '',
-    notes: '',
-    start: now.toDate(),
-    end: later.toDate()
-  }
   const [formValues, setFormValues] = useState(initialEvent);
   const {title, notes, start, end} = formValues;
 
