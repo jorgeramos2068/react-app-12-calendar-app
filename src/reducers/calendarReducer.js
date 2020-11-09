@@ -1,46 +1,53 @@
-import moment from 'moment';
 import types from '../types/types';
 
 const initialState = {
-  events: [{
-    id: new Date().getTime(),
-    title: 'My Birthday',
-    start: moment().toDate(),
-    end: moment().add(2, 'hours').toDate(),
-    bgcolor: '#fafafa',
-    user: {
-      uid: '123',
-      name: 'Clark Kent'
-    }
-  }],
+  events: [],
   activeEvent: null
 };
 
+// Event reference:
+// {
+//   id: new Date().getTime(),
+//   title: 'My Birthday',
+//   start: moment().toDate(),
+//   end: moment().add(2, 'hours').toDate(),
+//   notes: 'My notes',
+//   user: {
+//     uid: '123',
+//     name: 'Clark Kent'
+//   }
+// }
+
 const calendarReducer = (state = initialState, action) => {
   switch (action.type) {
-    case types.setActiveEvent:
+    case types.eventSetActive:
       return {
         ...state,
         activeEvent: action.payload
       };
-    case types.addNewEvent:
+    case types.eventAddNew:
       return {
         ...state,
         events: [...state.events, action.payload]
       };
-    case types.clearActiveEvent:
+    case types.eventLoadAll:
+      return {
+        ...state,
+        events: [...action.payload]
+      };
+    case types.eventClearActive:
       return {
         ...state,
         activeEvent: null
       };
-    case types.updateEvent:
+    case types.eventUpdate:
       return {
         ...state,
         events: state.events.map(event => {
           return (event.id === action.payload.id) ? action.payload : event
         })
       };
-    case types.deleteEvent:
+    case types.eventDelete:
       return {
         ...state,
         events: state.events.filter(event => {

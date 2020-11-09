@@ -1,6 +1,6 @@
 import { combineReducers } from 'redux';
 import authReducer from './authReducer';
-import calendarReducer from './calendarReducers';
+import calendarReducer from './calendarReducer';
 import uiReducer from './uiReducer';
 
 const rootReducer = combineReducers({

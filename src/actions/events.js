@@ -1,24 +1,68 @@
 import types from '../types/types';
+import { tokenFetch } from '../helpers/fetch';
+import { prepareEvents } from '../helpers/prepareEvents';
 
-export const addNewEvent = (event) => ({
-  type: types.addNewEvent,
+export const eventStartAddNew = (event) => {
+  return async (dispatch, getState) => {
+    const {uid, name} = getState().auth;
+    try {
+      const endpoint = 'events'
+      const resp = await tokenFetch(endpoint, event, 'POST');
+      const body = await resp.json();
+      if (body.ok) {
+        event.id = body.event.id;
+        event.user = {
+          _id: uid,
+          name: name
+        };
+        dispatch(eventAddNew(event));
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  }
+};
+
+export const eventAddNew = (event) => ({
+  type: types.eventAddNew,
   payload: event
 });
 
-export const setActiveEvent = (event) => ({
-  type: types.setActiveEvent,
+export const eventStartLoadAll = () => {
+  return async (dispatch) => {
+    try {
+      const endpoint = 'events';
+      const resp = await tokenFetch(endpoint);
+      const body = await resp.json();
+      if (body.ok) {
+        const events = prepareEvents(body.events);
+        dispatch(eventLoadAll(events));
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+};
+
+export const eventLoadAll = (events) => ({
+  type: types.eventLoadAll,
+  payload: events
+});
+
+export const eventSetActive = (event) => ({
+  type: types.eventSetActive,
   payload: event
 });
 
-export const clearActiveEvent = () => ({
-  type: types.clearActiveEvent
+export const eventClearActive = () => ({
+  type: types.eventClearActive
 });
 
-export const updateEvent = (event) => ({
-  type: types.updateEvent,
+export const eventUpdate = (event) => ({
+  type: types.eventUpdate,
   payload: event
 });
 
-export const deleteEvent = () => ({
-  type: types.deleteEvent
+export const eventDelete = () => ({
+  type: types.eventDelete
 });
