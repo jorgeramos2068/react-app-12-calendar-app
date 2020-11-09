@@ -82,6 +82,25 @@ export const eventUpdate = (event) => ({
   payload: event
 });
 
+export const eventStartDelete = () => {
+  return async (dispatch, getState) => {
+    const {id} = getstate().calendar.activeEvent;
+    try {
+      const endpoint = `events/${id}`;
+      const resp = await tokenFetch(endpoint, {}, 'DELETE');
+      const body = resp.json();
+      if (body.ok) {
+        dispatch(eventDelete());
+      }
+      else {
+        Swal.fire('Error', body.msg, 'error');
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+};
+
 export const eventDelete = () => ({
   type: types.eventDelete
 });
