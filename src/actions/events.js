@@ -84,7 +84,7 @@ export const eventUpdate = (event) => ({
 
 export const eventStartDelete = () => {
   return async (dispatch, getState) => {
-    const {id} = getstate().calendar.activeEvent;
+    const {id} = getState().calendar.activeEvent;
     try {
       const endpoint = `events/${id}`;
       const resp = await tokenFetch(endpoint, {}, 'DELETE');
@@ -103,4 +103,8 @@ export const eventStartDelete = () => {
 
 export const eventDelete = () => ({
   type: types.eventDelete
+});
+
+export const eventLogout = () => ({
+  type: types.eventLogout
 });
