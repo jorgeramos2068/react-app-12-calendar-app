@@ -64,7 +64,7 @@ export const eventStartUpdate = (event) => {
     try {
       const endpoint = `events/${event.id}`;
       const resp = await tokenFetch(endpoint, event, 'PUT');
-      const body = resp.json();
+      const body = await resp.json();
       if (body.ok) {
         dispatch(eventUpdate(event));
       }
@@ -88,7 +88,7 @@ export const eventStartDelete = () => {
     try {
       const endpoint = `events/${id}`;
       const resp = await tokenFetch(endpoint, {}, 'DELETE');
-      const body = resp.json();
+      const body = await resp.json();
       if (body.ok) {
         dispatch(eventDelete());
       }
