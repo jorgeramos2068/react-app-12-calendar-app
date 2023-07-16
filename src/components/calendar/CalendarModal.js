@@ -41,7 +41,10 @@ const CalendarModal = () => {
     if (activeEvent) {
       setFormValues(activeEvent);
     }
-  }, [activeEvent, setFormValues]);
+    else {
+      setFormValues(initialEvent);
+    }
+  }, [activeEvent, setFormValues, initialEvent]);
 
   const closeModal = () => {
     dispatch(uiCloseModal());
@@ -118,7 +121,9 @@ const CalendarModal = () => {
       className="modal"
       overlayClassName="modal-background"
     >
-      <h1> Nuevo evento </h1>
+      <h1>
+        {(activeEvent) ? 'Edit event' : 'New event'}
+      </h1>
       <hr />
       <form className="container" onSubmit={handleSubmit}>
         <div className="form-group">
