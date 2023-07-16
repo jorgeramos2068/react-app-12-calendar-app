@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import Modal from 'react-modal';
 import moment from 'moment';
 import DateTimePicket from 'react-datetime-picker';
+import Swal from 'sweetalert2';
 
 const customStyles = {
   content : {
@@ -20,18 +21,64 @@ const later = now.clone().add(1, 'hours');
 const CalendarModal = () => {
   const [startDate, setStartDate] = useState(now.toDate());
   const [endDate, setEndDate] = useState(later.toDate());
+  const [isValidTitle, setIsValidTitle] = useState(true);
+  const [formValues, setFormValues] = useState({
+    title: 'Event',
+    notes: '',
+    start: now.toDate(),
+    end: later.toDate()
+  });
+  const {title, notes, start, end} = formValues;
 
   const closeModal = () => {
     //setIsOpen(false);
   }
 
+  const handleInputChange = ({target}) => {
+    setFormValues({
+      ...formValues,
+      [target.name]: target.value
+    });
+  };
+
   const handleStartDateChange = (e) => {
     setStartDate(e);
+    setFormValues({
+      ...formValues,
+      start: e
+    });
   }
 
   const handleEndDateChange = (e) => {
     setEndDate(e);
+    setFormValues({
+      ...formValues,
+      end: e
+    });
   }
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (isValidForm()) {
+
+    }
+  };
+
+  const isValidForm = () => {
+    const momentStart = moment(start);
+    const momentEnd = moment(end);
+    if (momentStart.isSameOrAfter(momentEnd)) {
+      Swal.fire('Error', 'End date must be greater than start date', 'error');
+      return false;
+    }
+    if (title.trim().length < 2) {
+      setIsValidTitle(false);
+      return false;
+    }
+    setIsValidTitle(true);
+    closeModal();
+    return true;
+  };
 
   return (
     <Modal
@@ -45,7 +92,7 @@ const CalendarModal = () => {
     >
       <h1> Nuevo evento </h1>
       <hr />
-      <form className="container">
+      <form className="container" onSubmit={handleSubmit}>
         <div className="form-group">
           <label>Start date and time</label>
           <DateTimePicket
@@ -68,10 +115,12 @@ const CalendarModal = () => {
           <label>Title and notes</label>
           <input 
             type="text" 
-            className="form-control"
+            className={`form-control ${!isValidTitle && 'is-invalid'}`}
             placeholder="Event title"
             name="title"
             autoComplete="off"
+            value={title}
+            onChange={handleInputChange}
           />
           <small id="emailHelp" className="form-text text-muted">A short description</small>
         </div>
@@ -82,6 +131,8 @@ const CalendarModal = () => {
             placeholder="Notes"
             rows="5"
             name="notes"
+            value={notes}
+            onChange={handleInputChange}
           ></textarea>
           <small id="emailHelp" className="form-text text-muted">Additional information</small>
         </div>
