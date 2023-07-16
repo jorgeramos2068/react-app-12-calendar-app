@@ -21,7 +21,7 @@ jest.mock('sweetalert2', () => ({
 describe('Tests in LoginScreen component', () => {
   let wrapper;
   let store;
-  const initialState = {}
+  const initialState = {};
 
   beforeEach(() => {
     jest.clearAllMocks();
