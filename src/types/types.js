@@ -9,7 +9,6 @@ const types = {
   deleteEvent: '[event] Delete event',
 
   authChecking: '[auth] Checking login state',
-  authFinishChecking: '[auth] Finish checking login state',
   authStartLogin: '[auth] Start login',
   authLogin: '[auth] Login',
   authStartRegister: '[auth] Start register',
