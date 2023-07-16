@@ -5,7 +5,9 @@ import moment from 'moment';
 import Navbar from '../ui/Navbar';
 import CalendarEvent from './CalendarEvent';
 import CalendarModal from './CalendarModal';
+import AddNewFAB from '../ui/AddNewFAB';
 import { uiOpenModal } from '../../actions/ui';
+import { setActiveEvent } from '../../actions/events';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
 
 const localizer = momentLocalizer(moment);
@@ -29,7 +31,8 @@ const CalendarScreen = () => {
   }
 
   const onSelectEvent = (e) => {
-    //
+    dispatch(setActiveEvent(e));
+    dispatch(uiOpenModal());
   }
 
   const onView = (e) => {
@@ -65,6 +68,7 @@ const CalendarScreen = () => {
         onView={onView}
         view={lastView}
       />
+      <AddNewFAB />
       <CalendarModal />
     </div>
   );
