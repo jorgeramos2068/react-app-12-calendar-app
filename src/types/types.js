@@ -2,11 +2,13 @@ const types = {
   uiOpenModal: '[ui] Open modal',
   uiCloseModal: '[ui] Close modal',
 
-  setActiveEvent: '[event] Set active',
-  addNewEvent: '[event] Add new',
-  clearActiveEvent: '[event] Clear active',
-  updateEvent: '[event] Update event',
-  deleteEvent: '[event] Delete event',
+  eventSetActive: '[event] Set active',
+  eventStartAddNew: '[event] Start add new',
+  eventAddNew: '[event] Add new',
+  eventClearActive: '[event] Clear active',
+  eventUpdate: '[event] Update event',
+  eventDelete: '[event] Delete event',
+  eventLoadAll: '[event] Load all',
 
   authChecking: '[auth] Checking login state',
   authStartLogin: '[auth] Start login',

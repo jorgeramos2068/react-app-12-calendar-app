@@ -20,7 +20,6 @@ const authReducer = (state = initialState, action) => {
         checking: false
       }
     case types.authLogout:
-      console.log('Logout');
       return {
         checking: false
       }
