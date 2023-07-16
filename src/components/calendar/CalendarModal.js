@@ -1,11 +1,11 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import Modal from 'react-modal';
 import moment from 'moment';
 import DateTimePicket from 'react-datetime-picker';
 import Swal from 'sweetalert2';
 import { uiCloseModal } from '../../actions/ui';
-import { addNewEvent } from '../../actions/events';
+import { addNewEvent, clearActiveEvent, updateEvent } from '../../actions/events';
 
 const customStyles = {
   content : {
@@ -24,19 +24,29 @@ const later = now.clone().add(1, 'hours');
 const CalendarModal = () => {
   const dispatch = useDispatch();
   const {modalOpen} = useSelector(state => state.ui);
+  const {activeEvent} = useSelector(state => state.calendar);
   const [startDate, setStartDate] = useState(now.toDate());
   const [endDate, setEndDate] = useState(later.toDate());
   const [isValidTitle, setIsValidTitle] = useState(true);
-  const [formValues, setFormValues] = useState({
-    title: 'Event',
+  const initialEvent = {
+    title: '',
     notes: '',
     start: now.toDate(),
     end: later.toDate()
-  });
+  }
+  const [formValues, setFormValues] = useState(initialEvent);
   const {title, notes, start, end} = formValues;
+
+  useEffect(() => {
+    if (activeEvent) {
+      setFormValues(activeEvent);
+    }
+  }, [activeEvent, setFormValues]);
 
   const closeModal = () => {
     dispatch(uiCloseModal());
+    dispatch(clearActiveEvent());
+    setFormValues(initialEvent);
   }
 
   const handleInputChange = ({target}) => {
@@ -65,11 +75,20 @@ const CalendarModal = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     if (isValidForm()) {
-      const newEvent = {
-        ...formValues,
-        id: new Date().getTime()
-      };
-      dispatch(addNewEvent(newEvent));
+      if (activeEvent) {
+        dispatch(updateEvent(formValues))
+      }
+      else {
+        const newEvent = {
+          ...formValues,
+          id: new Date().getTime(),
+          user: {
+            id: '123',
+            name: 'Batman'
+          }
+        };
+        dispatch(addNewEvent(newEvent));
+      }
     }
   };
 
